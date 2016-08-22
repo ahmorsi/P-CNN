@@ -19,8 +19,11 @@ parfor vi = 1:length(video_names)
     images=dir(sprintf('%s/%s/*%s',param.impath,vidname,param.imext));
     images = {images.name};
     
+     jointFile = sprintf('%s/%s/joint_positions',param.jointpath,vidname);
     % get video joint positions and human scales
-    positions=load(sprintf('%s/%s/joint_positions',param.jointpath,vidname)) ;
+    if ~exist(jointFile,'file'); continue ; end ;
+	
+    positions=load(jointFile) ;
     scale=positions.scale ;
     positions=positions.pos_img ;
     
