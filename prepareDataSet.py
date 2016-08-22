@@ -3,7 +3,7 @@ import re
 import sys
 
 if len(sys.argv) < 2:
-	sys.exit("Usage : prepareDataSet <DataSetBaseDir>")
+	sys.exit("Usage:\n prepareDataSet <DataSetBaseDir>")
 
 baseDir = os.path.join(sys.argv[1],'splits')
 if not os.path.exists(baseDir):
