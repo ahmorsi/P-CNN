@@ -21,7 +21,9 @@ for ci = 1:length(classes)
    fprintf(fileID,'Compute PCNN for %d out of %d classes (%s)\n',ci,length(classes),className);
    totalElapsedTime = 0;
    for splitNum=1:splits
-	tStart = tic;    
+	tStart = tic;
+	fprintf('Start Computing PCNN for %d split of %d classes (%s)\n',splitNum,ci,className); 
+	fprintf(fileID,'Start Computing PCNN for %d split of %d classes (%s) at %s\n',splitNum,ci,className,datestr(now));   
 	ComputePCNN(datadir,className,splitNum);
 	tElapsed = toc(tStart)/60;
         totalElapsedTime = totalElapsedTime + tElapsed;
@@ -30,6 +32,7 @@ for ci = 1:length(classes)
    end
    fprintf('Finished PCNN for class %d or %s in %.1f mins\n',ci,className,totalElapsedTime);
    fprintf(fileID,'Finished PCNN for class %d or %s in %.1f mins\n',ci,className,totalElapsedTime);
+   fprintf(logFile,'Finished PCNN for class %d or %s in %.1f mins\n',ci,className,totalElapsedTime);
    fclose(fileID);	
 end
 
