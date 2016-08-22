@@ -1,7 +1,17 @@
 import os
 import re
+import sys
 
-baseDir = '/media/data/amorsy/Full_JHMDB/splits'
+if len(sys.argv) < 2:
+	sys.exit("Usage : prepareDataSet <DataSetBaseDir>")
+
+baseDir = os.path.join(sys.argv[1],'splits')
+if not os.path.exists(baseDir):
+	sys.exit("{0} -- Not exist\n".format(baseDir))
+
+rawsplitsDir = os.path.join(sys.argv[1],'raw_splits')
+if not os.path.exists(rawsplitsDir):
+	os.makedirs(rawsplitsDir)
 label = 0
 class2Label = dict()
 for file in os.listdir(baseDir):
@@ -28,6 +38,7 @@ for file in os.listdir(baseDir):
 			else:
 				testSw.write("{0}\t{1}\n".format(name,class2Label[className]))		
         print(file)
+	os.rename(os.path.join(baseDir,file),os.path.join(rawsplitsDir,file))
 	trainSw.close()
 	testSw.close()
 
