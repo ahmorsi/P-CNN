@@ -21,7 +21,34 @@ for i=1:2 % appearance and flow
     
     % get list of part patches
     [filelist,outlist]=get_patches_list(patchesdir,framefeaturesdir);
-    
+%     for frameIdx=length(outlist):-1:1
+%         if exist(outlist{1,frameIdx},'file')
+%             fprintf('%s already computed\n',outlist{frameIdx});
+%             outlist(frameIdx) = [];
+%             filelist(frameIdx) = [];
+%         end    
+%     end
+
+alreadyComputedVideos = 0;
+    for vi=1:length(video_names)
+        videoName = video_names{vi};
+        if exist(sprintf('%s/%s.mat',videofeaturesdir,videoName),'file')
+            fprintf('%s already computed\n',videoName);
+            alreadyComputedVideos = alreadyComputedVideos + 1;
+            for frameIdx=length(outlist):-1:1
+                frame = outlist{1,frameIdx};
+                temp = strfind(frame,videoName);
+                if ~isempty(temp)
+                    outlist(frameIdx) = [];
+                    filelist(frameIdx) = [];
+                end    
+            end
+        end    
+    end   
+    if alreadyComputedVideos == length(video_names) 
+        continue;
+    end
+        
     % get net
     net=param.(sprintf('net_%s',suf{i}));
     if param.use_gpu ; net = vl_simplenn_move(net, 'gpu') ; end % move net on GPU if needed
@@ -107,7 +134,8 @@ for i=1:length(subD)
     dirpath=sprintf('%s/%s',framefeaturesdir,subD{i});
     pathname=sprintf('%s/%s_im*',dirpath,video_name);
     td=dir(pathname) ;
-    assert(~isempty(td));
+%     if isempty(td); continue; end; %Video doesn't have frame descriptors
+     assert(~isempty(td));
     x=zeros(length(td),4096) ;
     features(i).name=sprintf('CNNf_%s',subD{i}) ;
     for j=1:length(td)
