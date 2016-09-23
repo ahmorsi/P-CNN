@@ -19,7 +19,7 @@ param.cachepath = sprintf('%s/%s/cache',datadir,expName); % cache folder path
 param.net_app  = load('models/imagenet-vgg-f.mat') ; % appearance net path
 param.net_flow = load('models/flow_net.mat') ; % flow net path
 param.net_resnet = dagnn.DagNN.loadobj(load('models/imagenet-resnet-50-dag.mat'));param.net_resnet.mode = 'test';param.net_resnet.conserveMemory = 0;
-param.batchsize = 10 ; % size of CNN batches
+param.batchsize = 5 ; % size of CNN batches
 param.use_gpu = use_gpu ; % use GPU or CPUs to run CNN?
 param.nbthreads_netinput_loading = 20 ; % nb of threads used to load input images
 param.compute_kernel = compute_kernel ; % compute linear kernel and save it. If false, save raw features instead.
@@ -39,20 +39,17 @@ for cellidx = 1:length(splitData)
        %video_names = [video_names;names];   
     end    
 end    
-% video_names = dir(param.impath);
-% video_names={video_names.name};
-% video_names=video_names(~ismember(video_names,{'.','..'}));
 
 if ~exist(param.cachepath,'dir'); mkdir(param.cachepath) ; end % create cache folder
 
 % 1 - pre-compute OF images for all videosS
-%compute_OF(video_names,param); % compute optical flow between adjacent frames
-% 
+compute_OF(video_names,param); % compute optical flow between adjacent frames
+ 
 % % 2 - extract part patches
  extract_cnn_patches(video_names,param)
-% 
+
 % %3 - extract CNN features for each patch and group per video
-  extract_cnn_features(video_names,param)
+ extract_cnn_features(video_names,param)
 
 %4 - compute final P-CNN features + kernels
 compute_pcnn_features(param); % compute P-CNN for splitNum

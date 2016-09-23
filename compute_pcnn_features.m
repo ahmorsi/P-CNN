@@ -15,7 +15,8 @@ if ~exist(param.savedir,'dir'); mkdir(param.savedir) ; end % create res folder i
 
 fprintf('\n------ Compute P-CNN features ------\n')
 
-featdir_app=sprintf('%s/cnn_features_app/video_features',param.cachepath);
+featdir_app= sprintf('%s/cnn_features_app/video_features',param.cachepath);
+featdir_resnet = sprintf('%s/cnn_features_resnet/video_features',param.cachepath);
 featdir_flow=sprintf('%s/cnn_features_flow/video_features',param.cachepath);
 
 disp('In appearance')
@@ -29,7 +30,6 @@ end
 
 [Xn_train,Xn_test] = get_Xn_train_test(featdir_app,param,norms);
 
-
 disp('In flow')
 if isfield(param,'perpartL2') && param.perpartL2
     fprintf('Compute per part norms --->  '); tic;
@@ -42,6 +42,21 @@ end
 
 Xn_train = cat(1,Xn_train,Xn_trainOF); clear Xn_trainOF ;
 Xn_test = cat(1,Xn_test,Xn_testOF); clear Xn_testOF ;
+
+%%%%%%%%% ResNet Features %%%%%%%%%
+%Un-Comment this section if you want to use ResNet Features
+% disp('In ResNet appearance')
+% if isfield(param,'perpartL2') && param.perpartL2
+%     fprintf('Compute per part norms --->  '); tic;
+%     norms=get_partnorms(param.trainsplitpath,featdir_resnet,param);
+%     fprintf('%d sec\n',round(toc));
+% else
+%     norms=[];
+% end
+%[Xn_trainResNet,Xn_testResNet] = get_Xn_train_test(featdir_resnet,param,norms);
+% Xn_train = cat(1,Xn_train,Xn_trainResNet); clear Xn_trainResNet ;
+% Xn_test = cat(1,Xn_test,Xn_testResNet); clear Xn_trainResNet ;
+%%%%%%%%% END of ResNet Features %%%%%%%%%
 
 if param.compute_kernel
     disp('Compute Kernel Test')

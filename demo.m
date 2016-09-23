@@ -7,8 +7,8 @@
 if ~isdeployed
     addpath('brox_OF'); % Brox 2004 optical flow
 end
-matconvpath = 'matconvnet-1.0-beta11'; % MatConvNet
-run([matconvpath '/my_build.m']); % compile: modify this file to enable GPU support (much faster)
+matconvpath = 'matconvnet-1.0-beta21'; % MatConvNet
+%run([matconvpath '/my_build.m']); % compile: modify this file to enable GPU support (much faster)
 run([matconvpath '/matlab/vl_setupnn.m']) ; % setup  
 
 %% reproduce paper (ICCV 15) results (-0.9% acc, see README.md)
@@ -30,11 +30,12 @@ param.testsplitpath = 'JHMDB/splits/JHMDB_test1.txt';
 param.cachepath = 'cache'; % cache folder path
 param.net_app  = load('models/imagenet-vgg-f.mat') ; % appearance net path
 param.net_flow = load('models/flow_net.mat') ; % flow net path
-param.batchsize = 128 ; % size of CNN batches
-param.use_gpu = false ; % use GPU or CPUs to run CNN?
+param.net_resnet = dagnn.DagNN.loadobj(load('models/imagenet-resnet-50-dag.mat'));param.net_resnet.mode = 'test';param.net_resnet.conserveMemory = 0;
+param.batchsize = 10 ; % size of CNN batches
+param.use_gpu = true ; % use GPU or CPUs to run CNN?
 param.nbthreads_netinput_loading = 20 ; % nb of threads used to load input images
-param.compute_kernel = true ; % compute linear kernel and save it. If false, save raw features instead.
-
+param.compute_kernel = false ; % compute linear kernel and save it. If false, save raw features instead.
+param.use_poses=true;
 
 % get video names
 video_names = dir(param.impath);

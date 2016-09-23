@@ -8,7 +8,7 @@ if ~isdeployed
     addpath('brox_OF'); % Brox 2004 optical flow
 end
 matconvpath = 'matconvnet-1.0-beta21'; % MatConvNet
-%run([matconvpath '/my_build.m']); % compile: modify this file to enable GPU support (much faster)
+run([matconvpath '/my_build.m']); % compile: modify this file to enable GPU support (much faster)
 run([matconvpath '/matlab/vl_setupnn.m']) ; % setup  
 
 end

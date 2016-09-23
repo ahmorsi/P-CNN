@@ -7,9 +7,9 @@ cdirs={'patches_app','patches_resnet','patches_flow','patches_app/left_hand','pa
     'patches_app/right_hand','patches_resnet/right_hand','patches_flow/right_hand','patches_app/upper_body','patches_resnet/upper_body','patches_flow/upper_body', ...
     'patches_app/full_body','patches_resnet/full_body','patches_flow/full_body','patches_app/full_image','patches_resnet/full_image','patches_flow/full_image'};
 else
-    cdirs={ 'patches_app/top_left','patches_flow/top_left','patches_app/top_right','patches_flow/top_right',...
-    'patches_app/bottom_left','patches_flow/bottom_left','patches_app/bottom_right','patches_flow/bottom_right', ...
-     'patches_app/center','patches_flow/center','patches_app/full_image','patches_flow/full_image'};
+    cdirs={ 'patches_app/top_left','patches_flow/top_left','patches_resnet/top_left','patches_app/top_right','patches_flow/top_right',...
+    'patches_resnet/top_right','patches_app/bottom_left','patches_flow/bottom_left','patches_resnet/bottom_left','patches_app/bottom_right','patches_flow/bottom_right', ...
+     'patches_resnet/bottom_right','patches_app/center','patches_flow/center','patches_resnet/center','patches_app/full_image','patches_flow/full_image','patches_resnet/full_image'};
 end
 for d=1:length(cdirs)
     dname=sprintf('%s/%s',param.cachepath,cdirs{d});
@@ -28,22 +28,20 @@ parfor vi = 1:length(video_names)
     
      jointFile = sprintf('%s/%s/joint_positions',param.jointpath,vidname);
     % get video joint positions and human scales
-%     if ~exist(jointFile,'file'); continue ; end ;
-    if param.use_poses	
+
     	positions=load(jointFile) ;
     	scale=positions.scale ;
     	positions=positions.pos_img ;
-    end
+
     suf={'app','flow','resnet'} ;
     imdirs = {param.impath,sprintf('%s/OF',param.cachepath),param.impath};
     
-    for i=1:3 % appearance and flow 
+    for i=1:3 % appearance , flow and ResNet 
         imdirpath = imdirs{i};
         
         net=param.(sprintf('net_%s',suf{i}));
         
-        %for idim=1:min(length(images),length(positions))
-	for idim=1:length(images)
+	for idim=1:min(length(images),length(positions))
             if exist(sprintf('%s/full_image/%s_im%05d.jpg',param.cachepath,vidname,idim),'file')
                 continue;
             end
@@ -62,17 +60,21 @@ parfor vi = 1:length(video_names)
                 impath = sprintf('%s/%s/%s.jpg',imdirpath,vidname,iname) ; % flow has been previously saved in JPG
                 if ~exist(impath,'file'); continue ; end ; % flow was not computed (see compute_OF.m for info)
             end
-            im = imread(impath);
-            [height,width,~] = size(im)
-            % get part boxes
-            
-            
-           
-	if param.use_poses 
-           
-           % part CNN (fill missing part before resizing)
             sc=scale(idim); lside=param.lside*sc ;
             
+            im = imread(impath);% Load Image app or flow
+            fullbody = get_box_and_fill(min(positions(:,:,idim),[],2)-lside,max(positions(:,:,idim),[],2)+lside,im);%Extract Person Bouding Box based on Joint Positions
+            im = fullbody;
+            [height,width,~] = size(im);
+
+    % Extract Patches
+    
+	if param.use_poses % Based on Ground Truth Poses
+           
+           lside = 0;
+            % part CNN (fill missing part before resizing)
+            sc=scale(idim); lside=param.lside*sc ;
+  
             % left hand
             lhand = get_box_and_fill(positions(:,param.lhandposition,idim)-lside,positions(:,param.lhandposition,idim)+lside,im);
             lhand = imresize(lhand, imgSize) ;
@@ -93,7 +95,7 @@ parfor vi = 1:length(video_names)
             fullbody = get_box_and_fill(min(positions(:,:,idim),[],2)-lside,max(positions(:,:,idim),[],2)+lside,im);
             fullbody = imresize(fullbody, imgSize) ;
             imwrite(fullbody,sprintf('%s/patches_%s/full_body/%s_im%05d.jpg',param.cachepath,suf{i},vidname,idim));            
-        else    
+        else  % Just 4 quarters of body and Center
 	    % top Left
 	    topLeft = get_box_and_fill([1,1],[width/2,height/2],im);
             topLeft = imresize(topLeft, imgSize);

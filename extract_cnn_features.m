@@ -20,6 +20,7 @@ else
 	bodyparts={'top_left'  'top_right' 'bottom_left' 'bottom_right' 'center' 'full_image'};
 end
 featuresSz = 0; 
+
 for i=1:3 % appearance and flow
     
     % get folders
@@ -29,33 +30,6 @@ for i=1:3 % appearance and flow
     
     % get list of part patches
     [filelist,outlist]=get_patches_list(patchesdir,framefeaturesdir,bodyparts);
-%     for frameIdx=length(outlist):-1:1
-%         if exist(outlist{1,frameIdx},'file')
-%             fprintf('%s already computed\n',outlist{frameIdx});
-%             outlist(frameIdx) = [];
-%             filelist(frameIdx) = [];
-%         end    
-%     end
-
-% alreadyComputedVideos = 0;
-%     for vi=1:length(video_names)
-%         videoName = video_names{vi};
-%         if exist(sprintf('%s/%s.mat',videofeaturesdir,videoName),'file')
-%             fprintf('%s already computed\n',videoName);
-%             alreadyComputedVideos = alreadyComputedVideos + 1;
-%             for frameIdx=length(outlist):-1:1
-%                 frame = outlist{1,frameIdx};
-%                 temp = strfind(frame,videoName);
-%                 if ~isempty(temp)
-%                     outlist(frameIdx) = [];
-%                     filelist(frameIdx) = [];
-%                 end    
-%             end
-%         end    
-%     end   
-%     if alreadyComputedVideos == length(video_names) 
-%         continue;
-%     end
         
     % get net
     net=param.(sprintf('net_%s',suf{i}));
@@ -79,17 +53,16 @@ for i=1:3 % appearance and flow
         im = vl_imreadjpeg(filelist(b:min(b+bsize-1,nim)),'numThreads', param.nbthreads_netinput_loading) ;
         im = cat(4,im{:});
         
+        im = bsxfun(@minus, im, net.meta.normalization.averageImage) ;
+        if param.use_gpu ; im = gpuArray(im) ; end        
+        
         if strcmp(suf{i},'resnet') ~= 1
-        im = bsxfun(@minus, im, net.normalization.averageImage) ;
-        if param.use_gpu ; im = gpuArray(im) ; end
-        res=vl_simplenn(net,im);
-        fprintf('extract %.2f s\t',toc);tic;
-        save_feats(squeeze(res(end-2).x),outlist(b:min(b+bsize-1,nim)),param); % take features after last ReLU    
+            res=vl_simplenn(net,im);
+            fprintf('extract %.2f s\t',toc);tic;
+            save_feats(squeeze(res(end-2).x),outlist(b:min(b+bsize-1,nim)),param); % take features after last ReLU    
         else
-            im = bsxfun(@minus, im, net.meta.normalization.averageImage);
-            if param.use_gpu ; im = gpuArray(im) ; end
             net.eval({'data', im}) ;
-            res = net.vars(end-2).value;
+            res = gather(net.vars(end-2).value);
             fprintf('extract %.2f s\t',toc);tic;
             save_feats(squeeze(res),outlist(b:min(b+bsize-1,nim)),param); % take features after last ReLU
         end
@@ -108,11 +81,7 @@ for i=1:3 % appearance and flow
     end
 end
 
-
-
 function [filelist,outlist]=get_patches_list(indirname,outdirname,bodyparts)
-
-%bodyparts={'left_hand'  'right_hand' 'upper_body' 'full_body' 'full_image'};
 
 images=dir(sprintf('%s/%s/*jpg',indirname,bodyparts{1}));
 images = {images.name};
@@ -153,15 +122,13 @@ function group_cnn_features(framefeaturesdir,videofeaturesdir,video_name,bodypar
 % features(4).x <--- full body
 % features(5).x <--- full image
 
-% part sub-directories to check
-%bodyparts={'left_hand'  'right_hand' 'upper_body' 'full_body' 'full_image'};
+% part sub-directories to check "bodyparts"
 
 features = [] ;
 for i=1:length(bodyparts)
     dirpath=sprintf('%s/%s',framefeaturesdir,bodyparts{i});
     pathname=sprintf('%s/%s_im*',dirpath,video_name);
     td=dir(pathname) ;
-%     if isempty(td); continue; end; %Video doesn't have frame descriptors
      assert(~isempty(td));
     x=zeros(length(td),featuresSz) ;
     features(i).name=sprintf('CNNf_%s',bodyparts{i}) ;
