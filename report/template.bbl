@@ -1,0 +1,93 @@
+\begin{thebibliography}{10}\itemsep=-1pt
+
+\bibitem{chatfield2014return}
+K.~Chatfield, K.~Simonyan, A.~Vedaldi, and A.~Zisserman.
+\newblock Return of the devil in the details: Delving deep into convolutional
+  nets.
+\newblock {\em arXiv preprint arXiv:1405.3531}, 2014.
+
+\bibitem{cheron2015p}
+G.~Ch{\'e}ron, I.~Laptev, and C.~Schmid.
+\newblock P-cnn: Pose-based cnn features for action recognition.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 3218--3226, 2015.
+
+\bibitem{he2015deep}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun.
+\newblock Deep residual learning for image recognition.
+\newblock {\em arXiv preprint arXiv:1512.03385}, 2015.
+
+\bibitem{jhuang2013towards}
+H.~Jhuang, J.~Gall, S.~Zuffi, C.~Schmid, and M.~J. Black.
+\newblock Towards understanding action recognition.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 3192--3199, 2013.
+
+\bibitem{krizhevsky2012imagenet}
+A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  1097--1105, 2012.
+
+\bibitem{kuehne2011hmdb}
+H.~Kuehne, H.~Jhuang, E.~Garrote, T.~Poggio, and T.~Serre.
+\newblock Hmdb: a large video database for human motion recognition.
+\newblock In {\em 2011 International Conference on Computer Vision}, pages
+  2556--2563. IEEE, 2011.
+
+\bibitem{laptev2008learning}
+I.~Laptev, M.~Marszalek, C.~Schmid, and B.~Rozenfeld.
+\newblock Learning realistic human actions from movies.
+\newblock In {\em Computer Vision and Pattern Recognition, 2008. CVPR 2008.
+  IEEE Conference on}, pages 1--8. IEEE, 2008.
+
+\bibitem{lecun1998gradient}
+Y.~LeCun, L.~Bottou, Y.~Bengio, and P.~Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock {\em Proceedings of the IEEE}, 86(11):2278--2324, 1998.
+
+\bibitem{ni2014multiple}
+B.~Ni, V.~R. Paramathayalan, and P.~Moulin.
+\newblock Multiple granularity analysis for fine-grained action detection.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 756--763, 2014.
+
+\bibitem{perronnin2010improving}
+F.~Perronnin, J.~S{\'a}nchez, and T.~Mensink.
+\newblock Improving the fisher kernel for large-scale image classification.
+\newblock In {\em European conference on computer vision}, pages 143--156.
+  Springer, 2010.
+
+\bibitem{schuldt2004recognizing}
+C.~Schuldt, I.~Laptev, and B.~Caputo.
+\newblock Recognizing human actions: a local svm approach.
+\newblock In {\em Pattern Recognition, 2004. ICPR 2004. Proceedings of the 17th
+  International Conference on}, volume~3, pages 32--36. IEEE, 2004.
+
+\bibitem{simonyan2014two}
+K.~Simonyan and A.~Zisserman.
+\newblock Two-stream convolutional networks for action recognition in videos.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  568--576, 2014.
+
+\bibitem{wang2013action}
+H.~Wang and C.~Schmid.
+\newblock Action recognition with improved trajectories.
+\newblock In {\em Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 3551--3558, 2013.
+
+\bibitem{yue2015beyond}
+J.~Yue-Hei~Ng, M.~Hausknecht, S.~Vijayanarasimhan, O.~Vinyals, R.~Monga, and
+  G.~Toderici.
+\newblock Beyond short snippets: Deep networks for video classification.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 4694--4702, 2015.
+
+\bibitem{zhou2015interaction}
+Y.~Zhou, B.~Ni, R.~Hong, M.~Wang, and Q.~Tian.
+\newblock Interaction part mining: A mid-level approach for fine-grained action
+  recognition.
+\newblock In {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 3323--3331, 2015.
+
+\end{thebibliography}
