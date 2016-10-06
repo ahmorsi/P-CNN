@@ -234,6 +234,22 @@ Table \ref{table:diffparts} compares the performance of human part CNN features 
 
 
 \subsection{Performance of different pre-trained CNN models (Vgg-f vs ResNet)}
+
+As explained in Section \ref{resnetVsvgg}, our proposal for improvement was replacing the vgg-f cnn with ResNet-50 for appearance-based descriptors. The experiment shows an outstanding results which is summarized in table \ref{table:resnet}. The comparsion is between the oringal P-CNN approach (App + OF) and the improved P-CNN (ResNet-50 + OF). We can observe that IP-CNN outperforms the normal method due to the usage of ResNet as the appearance CNN model descriptor. As explained before, ResNet nowadays is the state of art for the image classification task and since deeper is better then we should expect that results. 
+
+\begin{table}
+	
+	\begin{center}
+		\begin{tabular}{ccc}
+			& App + OF & ResNet-50 + OF \\ [0.5ex]
+			\hline
+			& 74 & \textbf{77}\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{P-CNN vs IP-CNN on JHMDB(\% accuracy)}
+	\label{table:resnet}
+\end{table}
 \label{resnetVsvgg}
 {\small
 \bibliographystyle{ieee}
