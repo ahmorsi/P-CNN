@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.4)  5 OCT 2016 16:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9) (preloaded format=pdflatex 2016.10.4)  6 OCT 2016 05:34
 entering extended mode
 **./template.tex
 (template.tex
@@ -378,85 +378,80 @@ Package pdftex.def Info: P-CNN.png used on input line 76.
 
 
 ]
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ú in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ù in font ptmr7t!
+ [2 <./P-CNN.png>]
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ú in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ù in font ptmr7t!
+
+<resnet_imagenet.png, id=89, 574.145pt x 322.20375pt>
+File: resnet_imagenet.png Graphic file (type png)
+
+<use resnet_imagenet.png>
+Package pdftex.def Info: resnet_imagenet.png used on input line 137.
+(pdftex.def)             Requested size: 237.13594pt x 133.07784pt.
+ <resnet.png, id=90, 442.65375pt x 930.47626pt>
+File: resnet.png Graphic file (type png)
+
+<use resnet.png>
+Package pdftex.def Info: resnet.png used on input line 145.
+(pdftex.def)             Requested size: 237.13594pt x 498.47429pt.
+ <nopose.png, id=99, 767.86874pt x 310.15875pt>
+File: nopose.png Graphic file (type png)
+
+<use nopose.png>
+Package pdftex.def Info: nopose.png used on input line 182.
+(pdftex.def)             Requested size: 237.13594pt x 95.7838pt.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 184.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 184.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
-
-
-LaTeX Warning: Citation `Alpher02' on page 2 undefined on input line 112.
-
-
-LaTeX Warning: Citation `Alpher03' on page 2 undefined on input line 113.
-
-
-LaTeX Warning: Citation `Alpher04' on page 2 undefined on input line 113.
-
-
-LaTeX Warning: Citation `Alpher03' on page 2 undefined on input line 115.
-
-
-LaTeX Warning: Citation `Alpher03' on page 2 undefined on input line 116.
-
-
-LaTeX Warning: Citation `Alpher03' on page 2 undefined on input line 121.
-
-
-LaTeX Warning: Citation `Alpher02' on page 2 undefined on input line 121.
-
-
-LaTeX Warning: Citation `Authors13' on page 2 undefined on input line 121.
-
-
-LaTeX Warning: Citation `Alpher02' on page 2 undefined on input line 122.
-
-
-LaTeX Warning: Citation `Alpher03' on page 2 undefined on input line 122.
-
-
-LaTeX Warning: Citation `Authors13' on page 2 undefined on input line 122.
-
-[2 <./P-CNN.png>] <JHMDB.png, id=76, 439.6425pt x 174.6525pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 191.
+ [3 <./resnet_imagenet.png>]
+<JHMDB.png, id=119, 439.6425pt x 174.6525pt>
 File: JHMDB.png Graphic file (type png)
  <use JHMDB.png>
-Package pdftex.def Info: JHMDB.png used on input line 152.
+Package pdftex.def Info: JHMDB.png used on input line 198.
 (pdftex.def)             Requested size: 237.13594pt x 94.20433pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-LaTeX Warning: Reference `fig:onecol' on page 3 undefined on input line 186.
+ [4 <./resnet.png> <./nopose.png (PNG copy)> <./JHMDB.png>] (template.bbl
+Underfull \hbox (badness 2922) in paragraph at lines 92--97
+[]\OT1/ptm/m/n/9 C. Szegedy, W. Liu, Y. Jia, P. Ser-manet, S. Reed,
+ []
 
 
-LaTeX Warning: Reference `fig:short' on page 3 undefined on input line 186.
-
-
-LaTeX Warning: Citation `Authors13' on page 3 undefined on input line 221.
-
-(template.bbl [3 <./JHMDB.png>]
-Underfull \hbox (badness 2368) in paragraph at lines 80--85
+Underfull \hbox (badness 2368) in paragraph at lines 105--110
 []\OT1/ptm/m/n/9 J. Yue-Hei Ng, M. Hausknecht, S. Vi-jaya-narasimhan,
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 269.
- [4
-
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 269.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 243.
+ [5]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 243.
  (template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 269.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 269.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 269.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 243.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 243.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 243.
  ) 
 Here is how much of TeX's memory you used:
- 6376 strings out of 493334
- 91493 string characters out of 3136672
- 184927 words of memory out of 3000000
- 9769 multiletter control sequences out of 15000+200000
- 35088 words of font info for 82 fonts, out of 3000000 for 9000
+ 6402 strings out of 493334
+ 91931 string characters out of 3136672
+ 187448 words of memory out of 3000000
+ 9786 multiletter control sequences out of 15000+200000
+ 31235 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 34i,9n,26p,956b,468s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 34i,14n,26p,996b,336s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Progra
 m Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program 
 Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Fil
@@ -465,14 +460,14 @@ es (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files
 6)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/
 MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files (x86)/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x86)/MiKTeX
- 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Program Files (x86)/MiKTeX 2
-.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
-type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/t
-imes/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8
-a.pfb>
-Output written on template.pdf (4 pages, 789732 bytes).
+ 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.
+9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/ti
+mes/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmr8a
+.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on template.pdf (5 pages, 1147982 bytes).
 PDF statistics:
- 139 PDF objects out of 1000 (max. 8388607)
- 35 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 192 PDF objects out of 1000 (max. 8388607)
+ 46 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

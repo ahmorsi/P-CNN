@@ -92,52 +92,98 @@ object proposals\cite{zhou2015interaction}. Alternative methods represent action
 
 \section{P-CNN: Pose-based CNN features}
 \label{pcnn-features}
-\noindent
-Compare the following:\\
-\begin{tabular}{ll}
- \verb'$conf_a$' &  $conf_a$ \\
- \verb'$\mathit{conf}_a$' & $\mathit{conf}_a$
-\end{tabular}\\
-See The \TeX book, p165.
 
-The space after \eg, meaning ``for example'', should not be a
-sentence-ending space. So \eg is correct, {\em e.g.} is not.  The provided
-\verb'\eg' macro takes care of this.
+In \cite{cheron2015p}, they claim that human pose is essential for action recognition. They use positions of body joints to define informative image regions. Moreover, such regions are represented with motion-based and appearance-based CNN descriptors. Such descriptors
+are extracted at each frame and then aggregated over time
+to form a video descriptor, see figure \ref{fig:pcnn} for an overview.\\
+The details are explained below.
 
-When citing a multi-author paper, you may save space by using ``et alia'',
-shortened to ``\etal'' (not ``{\em et.\ al.}'' as ``{\em et}'' is a complete word.)
-However, use it only when there are three or more authors.  Thus, the
-following is correct: ``
-   Frobnication has been trendy lately.
-   It was introduced by Alpher~\cite{Alpher02}, and subsequently developed by
-   Alpher and Fotheringham-Smythe~\cite{Alpher03}, and Alpher \etal~\cite{Alpher04}.''
-
-This is incorrect: ``... subsequently developed by Alpher \etal~\cite{Alpher03} ...''
-because reference~\cite{Alpher03} has just two authors.  If you use the
-\verb'\etal' macro provided, then you need not worry about double periods
-when used at the end of a sentence as in Alpher \etal.
-
-For this citation style, keep multiple citations in numerical (not
-chronological) order, so prefer \cite{Alpher03,Alpher02,Authors13} to
-\cite{Alpher02,Alpher03,Authors13}.
-
-
-
-
+To generate P-CNN features, optical flow is computed for each consecutive pair of frames using \cite{brox2004high} method. They borrow inspiration from \cite{gkioxari2015finding}, the values of the motion field $v_{x},v_{y}$ are transformed to the interval [0,255] by $\tilde{v}_{x|y} = av_{x|y} + b$ where $a=16$ and $b=128$. The values below 0 and above
+255 are truncated. The transformed flow maps are saved as images with three channels corresponding to motion $\tilde{v}_{x|y}$ and the flow magnitude.
+Given a video frame and the corresponding positions of
+body joints, the RGB patches and flow patches are cropped for the following body parts: \textit{right hand, left hand, upper body, full body and full image} as illustrated in Figure\ref{fig:pcnn}. Each patch is resized to 224 x 224 pixels to match the CNN input layer. To represent appearance and motion patches, Two distinct CNNs are used with architecture similar to AlexNet\cite{krizhevsky2012imagenet}. Both networks contain 5 convolutional and 3 fully-connected layers. The output of the second fully-connected layer with $k = 4096$ values is used as a frame descriptor ($f^{p}_{t}$). For RGB patches,they use the publicly available “VGG-f” network from \cite{chatfield2014return} that has been pre-trained on the ImageNet ILSVRC-2012 challenge dataset. Regarding the flow patches, the motion network provided by \cite{gkioxari2015finding} are being used which was pre-trained for action recognition task on the you tube video UCF101 dataset. \\
+Given descriptors $f^{p}_{t}$ for each part \textit{p} and each frame \textit{i} of video, the proceeding step is to aggregate $f^{p}_{t}$ over all frames to obtain a fixed-length video descriptor. They consider the \textit{min} and \textit{max} aggregation by computing the minimum and maximum values for each descriptor \textit{i} over \textit{T} video frames
+\begin{align} \label{eq1}
+	\begin{split}
+		m_{i} &= \min_{1 \leq t \leq T} f^{p}_{t}(i), \\
+		M_{i} & = \max_{1 \leq t \leq T} f^{p}_{t}(i)
+		\end{split}
+\end{align}
+The static video descriptor for part p is defined by the concatenation of time-aggregated frame descriptors as
+\begin{equation} \label{eq2}
+	v^{p}_{stat} = [m_{1},...,m_{k},M_{1},...,M_{k}]^{T}.
+\end{equation}
+To capture temporal evolution of per-frame descriptors, the temporal differences will be in form $\displaystyle \Delta f^{p}_{t} = f^{p}_{t+\Delta t} - f^{p}_{t} \text{ for } \Delta t=4 \text{ frames}$. Similar to \eqref{eq1}, the aggregation of temporal differences values is computed for minimum $\Delta m_{i}$ and maximum  $\Delta m_{i}$ of $\Delta f^{p}_{t}$ and concatenate them into the dynamic video descriptor
+\begin{equation} \label{eq3}
+v^{p}_{stat} = [\Delta m_{1},...,\Delta m_{k},\Delta M_{1},...,\Delta M_{k}]^{T}.
+\end{equation}
+Finally, video descriptors for motion and appearance for all
+parts and different aggregation schemes are normalized and
+concatenated into the P-CNN feature vector. The normalization
+is performed by dividing video descriptors by the
+average $L_{2-norm}$ of the $f^{p}_{t}$ from the training set.The concatenation of static and dynamic descriptors will be denoted by “Static+Dyn”.\\
+The final dimension of our P-CNN is $(5x4x4K)x 2 = 160K$, i.e., 5 body parts, 4 different aggregation schemes, 4K-dimensional CNN descriptor for appearance and motion. P-CNN training is performed using a linear SVM.
 %------------------------------------------------------------------------
 \section{IPCNN: Improved P-CNN}
 \label{ipcnn}
-All text must be in a two-column format. The total allowable width of the
-text area is $6\frac78$ inches (17.5 cm) wide by $8\frac78$ inches (22.54
-cm) high. Columns are to be $3\frac14$ inches (8.25 cm) wide, with a
-$\frac{5}{16}$ inch (0.8 cm) space between them. The main title (on the
-first page) should begin 1.0 inch (2.54 cm) from the top edge of the
-page. The second and following pages should begin 1.0 inch (2.54 cm) from
-the top edge. On all pages, the bottom margin should be 1-1/8 inches (2.86
-cm) from the bottom edge of the page for $8.5 \times 11$-inch paper; for A4
-paper, approximately 1-5/8 inches (4.13 cm) from the bottom edge of the
-page.
+In the previous section, we discussed the details of the P-CNN approach which is in brief extracting the video descriptors $V^{p}_{Static+Dyn}$ for each body part p aggregated across all the frames. The frame descriptor $f^{p}_{t}$ is computed from the appearance-based and motion-based CNNs pre-trained models. In this section, we will discuss the improved version of P-CNN which is replacing the "VGG-F" apperance CNN with the state of art image classification very Deep CNN called Deep Network(ResNet)\cite{he2015deep}.
 
+According to ImageNet 2015, ResNet out performs all the other approaches like GoogleNet\cite{szegedy2015going} and Vgg-f as illustrated in figure \ref{fig:imagenet}.An ensemble of these residual nets achieves 3.57\% error on the ImageNet test set. This result won the 1st place on the ILSVRC 2015 classification task. On the ImageNet dataset they evaluated residual nets with a depth of up to 152 layers-8x deeper than VGG nets but still having lower complexity. Hence, it is proven that deeper net is better performance in case there is no degradation problem and ResNet is a stack of residual blocks with very deep architecture that solves the vanishing gradients problem, see figure \ref{fig:resnet}.
+
+In the context of action recognition and P-CNN method, we apply the same approach on JHMDB dataset\ref*{dataset} by replacing "VGG-F" appearance-based model with ResNet-50 (50 layers Residual Blocks). In contrast with \ref{pcnn-features}, the output of the last average pooling layer with k=2048 values is used as appearance frame descriptor $f^{p}_{t}$. This improved version of P-CNN (IP-CNN) out performs the original approach by 3~4\%; for more details read section \ref{results}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=1.0\linewidth]{resnet_imagenet}
+	\end{center}
+	\caption{Performance of different approaches in ImageNet 2015 competition.}
+	\label{fig:imagenet}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=1.0\linewidth]{resnet}
+	\end{center}
+	\caption{Example network architectures for ImageNet. Left: the
+		VGG-19 model (19.6 billion FLOPs) as a reference. Middle:
+		a plain network with 34 parameter layers (3.6 billion FLOPs).
+		Right: a residual network with 34 parameter layers (3.6 billion
+		FLOPs). The dotted shortcuts increase dimensions. }
+	\label{fig:resnet}
+\end{figure}
+
+\section{P-CNN without Pose Estimation}
+
+In this section, we want to prove that the claim in \cite{cheron2015p} regarding the importance of the human pose in the action recognition task is correct. Removing the pose information from the patch extraction process and use another naive approach will prove by contradiction how crucial the human joints positions to the task. 
+
+In \cite{cheron2015p}, they compared P-CNN using ground truth pose to the automatic pose estimation; the summary of the results is shown in Table \ref{table:pose}. On the other hand, we tried different approaches for parts extraction without using the pose information.The first approach named "NoPose" is to crop an image into quarters and a center one regardless the human bounding box and the second approach "NoPose-BB" is similar to the previous one but extract the crops within the human bounding box;see figure \ref{fig:nopse}. The results have proven the claim of the importance of human pose in our task and this will be discussed in Section \ref{results}.
+
+\begin{table}
+	
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			& & JHMDB\\ [0.5ex] 
+			\cline{2-4}
+			 & GT & Pose\cite{cherian2014mixing} & diff \\ [0.5ex]
+			\hline
+			P-CNN & 74.6 & 66.8 & 13.5\\
+			HLPF  & 77.8 & 25.3 & 52.5\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Impact of automatic pose estimation versus
+		ground-truth pose (GT) for P-CNN features and HLPF\cite{jhuang2013towards}.Results are presented for JHMDB (\% accuracy )}
+	\label{table:pose}
+\end{table}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=1.0\linewidth]{nopose}
+	\end{center}
+	\caption{Illustration of the cropping approaches without Pose information. \textbf{\textit{NoPose}} : crops of an image subdivided in quarters and a center crop regardless the human bounding box. \textbf{\textit{NoPose-BB}}:  similar to \textit{NoPose} but within the human bounding box.}
+	\label{fig:nopse}
+\end{figure}
 %-------------------------------------------------------------------------
 \section{Datasets}
 \label{dataset}
@@ -159,108 +205,36 @@ is assigned an action label corresponding to the maximum value among the scores 
 %-------------------------------------------------------------------------
 \section{Experimental results}
 \label{results}
-Wherever Times is specified, Times Roman may also be used. If neither is
-available on your word processor, please use the font closest in
-appearance to Times to which you have access.
+This section describes our experimental results and highlight important experiments done on the original approach in \cite{cheron2015p}. First, we present the evaluation of the complementarity of different human parts in Section\ref{diffParts}. We then compare the performance of the Original P-CNN and our improved P-CNN with ResNet in Section\ref{resnetVsvgg}. 
 
-MAIN TITLE. Center the title 1-3/8 inches (3.49 cm) from the top edge of
-the first page. The title should be in Times 14-point, boldface type.
-Capitalize the first letter of nouns, pronouns, verbs, adjectives, and
-adverbs; do not capitalize articles, coordinate conjunctions, or
-prepositions (unless the title begins with such a word). Leave two blank
-lines after the title.
-
-AUTHOR NAME(s) and AFFILIATION(s) are to be centered beneath the title
-and printed in Times 12-point, non-boldface type. This information is to
-be followed by two blank lines.
-
-The ABSTRACT and MAIN TEXT are to be in a two-column format.
-
-MAIN TEXT. Type main text in 10-point Times, single-spaced. Do NOT use
-double-spacing. All paragraphs should be indented 1 pica (approx. 1/6
-inch or 0.422 cm). Make sure your text is fully justified---that is,
-flush left and flush right. Please do not place any additional blank
-lines between paragraphs.
-
-Figure and table captions should be 9-point Roman type as in
-Figures~\ref{fig:onecol} and~\ref{fig:short}.  Short captions should be centred.
-
-\noindent Callouts should be 9-point Helvetica, non-boldface type.
-Initially capitalize only the first word of section titles and first-,
-second-, and third-order headings.
-
-FIRST-ORDER HEADINGS. (For example, {\large \bf 1. Introduction})
-should be Times 12-point boldface, initially capitalized, flush left,
-with one blank line before, and one blank line after.
-
-SECOND-ORDER HEADINGS. (For example, { \bf 1.1. Database elements})
-should be Times 11-point boldface, initially capitalized, flush left,
-with one blank line before, and one after. If you require a third-order
-heading (we discourage it), use 10-point Times, boldface, initially
-capitalized, flush left, preceded by one blank line, followed by a period
-and your text on the same line.
-
-%-------------------------------------------------------------------------
-\subsection{Footnotes}
-
-Please use footnotes\footnote {This is what a footnote looks like.  It
-often distracts the reader from the main flow of the argument.} sparingly.
-Indeed, try to avoid footnotes altogether and include necessary peripheral
-observations in
-the text (within parentheses, if you prefer, as in this sentence).  If you
-wish to use a footnote, place it at the bottom of the column on the page on
-which it is referenced. Use Times 8-point type, single-spaced.
-
-
-%-------------------------------------------------------------------------
-\subsection{References}
-
-List and number all bibliographical references in 9-point Times,
-single-spaced, at the end of your paper. When referenced in the text,
-enclose the citation number in square brackets, for
-example~\cite{Authors13}.  Where appropriate, include the name(s) of
-editors of referenced books.
-
+\subsection{Performance of human part features}
+\label{diffParts}
 \begin{table}
-\begin{center}
-\begin{tabular}{|l|c|}
-\hline
-Method & Frobnability \\
-\hline\hline
-Theirs & Frumpy \\
-Yours & Frobbly \\
-Ours & Makes one's heart Frob\\
-\hline
-\end{tabular}
-\end{center}
-\caption{Results.   Ours is better.}
+	
+	\begin{center}
+		\begin{tabular}{cccc}
+			\hline
+			& & JHMDB-GT\\ [0.5ex] 
+			\cline{2-4}
+			Parts & App & OF & App + OF \\ [0.5ex]
+			\hline
+			Hands & 46.3 & 54.9 & 57.9\\
+			Upper body  & 52.8 & 60.9 & 67.1\\
+			Full body  & 52.2 & 61.6 & 66.1\\
+			Full body  & 43.3 & 55.7 & 61.0\\
+			All  & \textbf{60.4} & \textbf{69.1} & \textbf{73.4}\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Performance of appearance-based (App) and flow-based (OF) P-CNN features. Results are obtained with maxaggregation for JHMDB-GT (\% accuracy)}
+	\label{table:diffparts}
 \end{table}
 
-%-------------------------------------------------------------------------
-\subsection{Illustrations, graphs, and photographs}
-
-All graphics should be centered.  Please ensure that any point you wish to
-make is resolvable in a printed copy of the paper.  Resize fonts in figures
-to match the font in the body text, and choose line widths which render
-effectively in print.  Many readers (and reviewers), even of an electronic
-copy, will choose to print your paper in order to read it.  You cannot
-insist that they do otherwise, and therefore must not assume that they can
-zoom in to see tiny details on a graphic.
-
-When placing figures in \LaTeX, it's almost always best to use
-\verb+\includegraphics+, and to specify the  figure width as a multiple of
-the line width as in the example below
-{\small\begin{verbatim}
-   \usepackage[dvips]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]
-                   {myfile.eps}
-\end{verbatim}
-}
+Table \ref{table:diffparts} compares the performance of human part CNN features for both appearance and flow on JHMDB-GT (the JHMDB dataset with ground-truth pose). We can observe that all human parts (hands, upper body, full body) as well as the full image have similar performance and that their combination improves the performance significantly. We can also observe that flow descriptors consistently outperform appearance descriptors by a significant margin for all parts as well as for the overall combination \textit{All}. Moreover, we can observe that the combination of appearance and flow further improves the performance for all parts including their combination \textit{All}. This is the pose representation used in the rest of the evaluation.
 
 
-
-
-
+\subsection{Performance of different pre-trained CNN models (Vgg-f vs ResNet)}
+\label{resnetVsvgg}
 {\small
 \bibliographystyle{ieee}
 \bibliography{egbib}

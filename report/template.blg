@@ -5,8 +5,9 @@ Repeated entry---line 61 of file egbib.bib
  : @inproceedings{wang2013action
  :                              ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "Alpher02"
-Warning--I didn't find a database entry for "Alpher03"
-Warning--I didn't find a database entry for "Alpher04"
+Repeated entry---line 134 of file egbib.bib
+ : @article{he2015deep
+ :                    ,
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "Authors13"
-(There was 1 error message)
+(There were 2 error messages)
