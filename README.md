@@ -1,7 +1,7 @@
 Information
 ===========
 
-This package contains a matlab implementation of Pose-based CNN (P-CNN) algorithm described in \[1\]. It includes pre-trained CNN appearance vgg-f model \[2\], a matlab version of the flow model of \[3\] and the optical flow implementation of \[4\]. CNN implementation uses the MatConvNet library \[5\]. The project webpage is http://www.di.ens.fr/willow/research/p-cnn/ .
+This package contains a matlab implementation of Improved Pose-based CNN (P-CNN) algorithm which is the improvement the Orignal approach P-CNN described in \[1\]. It includes pre-trained CNN appearance vgg-f model \[2\],ResNet-50 pretrained Model \[8\], a matlab version of the flow model of \[3\] and the optical flow implementation of \[4\]. CNN implementation uses the MatConvNet library \[5\]. The project webpage is http://www.di.ens.fr/willow/research/p-cnn/ .
 
 ####To run this package:
 - Prepare/download CNN models and data examples by running `init.sh` file from the P-CNN folder.
@@ -53,6 +53,8 @@ YEAR = {2015},<br>
 \[6\] H. Jhuang, J. Gall, S. Zuffi, C. Schmid, and M. J. Black. Towards understanding action recognition. ICCV 2013.
 
 \[7\] M. Rohrbach, S. Amin, M. Andriluka and B. Schiele. A Database for Fine Grained Activity Detection of Cooking Activities. CVPR 2012.
+
+\[8\] He, Kaiming, et al. "Deep residual learning for image recognition." arXiv preprint arXiv:1512.03385 (2015).
 
 ####Acknowledgements
 We graciously thank the authors of the previous code releases and video benchmark for making them publicly available.
